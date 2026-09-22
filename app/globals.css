@@ -1,0 +1,402 @@
+/* ============================================================
+   CINEMATIC PORTFOLIO — GLOBAL STYLES
+   Palette: #030607 bg · #4A9EFF accent · #F0F2F3 text
+   ============================================================ */
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+  /* ── Restrained Cinematic Palette ───────────────────────────── */
+  --bg:              #08090C; /* Graphite */
+  --bg-mid:          #101217; /* Deep charcoal */
+  --bg-surface:      #181C23; /* Soft graphite */
+
+  /* Typography Color Hierarchy */
+  --text:            #F2F0EA; /* Warm white headings */
+  --text-primary:    #F2F0EA; /* Warm white */
+  --text-sec:        #A7ADB8; /* Cool grey secondary */
+  --text-secondary:  #A7ADB8;
+  --text-muted:      #6F7785; /* Soft cool slate */
+  --text-meta:       #7A9BB8; /* Desaturated blue metadata */
+
+  /* Secondary & Accents */
+  --accent:          #4F7CFF; /* Electric blue */
+  --accent-cobalt:   #243B80; /* Deep cobalt */
+  --accent-cyan:     #65D6E8; /* Muted cyan technical labels */
+  --accent-violet:   #7867D8; /* Violet */
+  --accent-indigo:   #34306B; /* Indigo */
+  --accent-champagne:#D8B77A; /* Warm champagne */
+  --accent-amber:    #C58B52; /* Soft amber indicator */
+  --accent-rose:     #A45B8A; /* Muted magenta / subtle rose */
+
+  --hairline:        rgba(242, 240, 234, 0.08);
+  --hairline-lg:     rgba(242, 240, 234, 0.14);
+  --font-display:    var(--font-display);
+  --font-mono:       var(--font-mono);
+}
+
+/* ── Base Reset ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Hide default scrollbar */
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; }
+
+/* ── Film Grain Overlay ──────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: grain-shift 0.5s steps(1) infinite;
+}
+
+@keyframes grain-shift {
+  0%  { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 3px); }
+  40% { transform: translate(-4px, -1px); }
+  60% { transform: translate(3px, -2px); }
+  80% { transform: translate(1px, 4px); }
+  100%{ transform: translate(-3px, 1px); }
+}
+
+/* ── Custom Cursor ───────────────────────────────────────────── */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* ── Lenis Smooth Scroll ─────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ── Typography ──────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display), -apple-system, sans-serif;
+}
+.font-mono {
+  font-family: var(--font-mono), SFMono-Regular, Consolas, monospace;
+}
+
+/* Display heading defaults */
+h1, h2, h3, h4 {
+  font-family: var(--font-display), -apple-system, sans-serif;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.text-meta {
+  color: var(--text-meta);
+}
+
+.text-cyan {
+  color: var(--accent-cyan);
+}
+
+.text-amber {
+  color: var(--accent-amber);
+}
+
+.text-champagne {
+  color: var(--accent-champagne);
+}
+
+/* ── Section Label ───────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--hairline-lg);
+  flex-shrink: 0;
+}
+
+/* ── Masked Reveal ───────────────────────────────────────────── */
+.masked-reveal-wrapper {
+  overflow: hidden;
+  display: block;
+}
+
+/* ── Hairline Border ─────────────────────────────────────────── */
+.border-hairline {
+  border-color: var(--hairline);
+}
+
+.border-hairline-lg {
+  border-color: var(--hairline-lg);
+}
+
+/* ── Magnetic Button ─────────────────────────────────────────── */
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: color 0.2s ease;
+}
+
+.magnetic-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.magnetic-btn:hover::after,
+.magnetic-btn:focus-visible::after {
+  width: 100%;
+}
+
+/* ── Arrow Button ────────────────────────────────────────────── */
+.arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.arrow-btn .arrow-line {
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  vertical-align: middle;
+}
+
+.arrow-btn:hover,
+.arrow-btn:focus-visible {
+  color: var(--text);
+}
+
+.arrow-btn:hover .arrow-line,
+.arrow-btn:focus-visible .arrow-line {
+  width: 40px;
+}
+
+/* ── Tag Pills ───────────────────────────────────────────────── */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border: 1px solid var(--hairline);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-radius: 2px;
+}
+
+/* ── Project Navigation ──────────────────────────────────────── */
+.project-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.project-nav-item.active,
+.project-nav-item:hover {
+  color: var(--text);
+}
+
+.project-nav-item .nav-line {
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.project-nav-item.active .nav-line {
+  width: 24px;
+}
+
+/* ── Loading Screen ──────────────────────────────────────────── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(3, 6, 7, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px;
+}
+
+.loading-line {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.loading-line.active {
+  opacity: 0.6;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ── Chromatic Aberration (velocity) ─────────────────────────── */
+body.scroll-fast .chroma-target::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(74, 158, 255, 0.6);
+  transform: translateX(-1.5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+body.scroll-fast .chroma-target::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(255, 80, 80, 0.4);
+  transform: translateX(1.5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Status Pulse ────────────────────────────────────────────── */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: status-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── Drawing SVG Lines ───────────────────────────────────────── */
+.svg-draw {
+  stroke-dashoffset: 1000;
+  stroke-dasharray: 1000;
+}
+
+/* ── Reduced Motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain { animation: none; }
+}
+
+/* ── Utility ─────────────────────────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Content Protection Safe Zone (Rule 60) ──────────────────── */
+.content-safe-zone {
+  position: relative;
+  z-index: 10;
+}
+.content-safe-zone::before {
+  content: '';
+  position: absolute;
+  inset: -80px -60px;
+  background: radial-gradient(ellipse at center, rgba(3, 6, 7, 0.75) 0%, rgba(3, 6, 7, 0.3) 50%, rgba(3, 6, 7, 0) 80%);
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+}
