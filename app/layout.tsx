@@ -1,49 +1,25 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Archivo, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
 
-const displayFont = Plus_Jakarta_Sans({ 
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const bodyFont = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const monoFont = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+// One variable family carries both body and display; its width axis is animated.
+const sans = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-sans", display: "swap" });
+const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: "italic", variable: "--font-serif", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Tharun B.L — Frontend Developer × AI Builder",
-  description: "Portfolio of Tharun B.L, Frontend Developer & AI Builder.",
-  icons: {
-    icon: "/icon.svg",
-  },
+  description:
+    "Tharun B.L builds interfaces for AI products — frontend engineering, interaction and motion, from Coimbatore, India.",
+  icons: { icon: "/icon.svg" },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = { themeColor: "#0B0B0C" };
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable}`}>
-      <body className="antialiased font-body selection:bg-[var(--accent)] selection:text-[var(--bg)] has-custom-cursor">
-        <div className="grain"></div>
-        <CustomCursor />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
-      </body>
+    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
+      <body className="grain font-sans text-bone">{children}</body>
     </html>
   );
 }

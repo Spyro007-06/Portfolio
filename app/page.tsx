@@ -1,5 +1,5 @@
-import Portfolio from '@/components/portfolio/Portfolio'
+import Site from "@/components/Site";
 
-export default function Home() {
-  return <Portfolio />
+export default function Page() {
+  return <Site />;
 }
