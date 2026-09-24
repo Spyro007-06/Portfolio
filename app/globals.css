@@ -3,21 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --ink: #0b0b0c;
-  --bone: #edeae3;
-  --accent: #3d6bff; /* re-assigned per section/project */
+  --ink: #0a0a0b;
+  --bone: #fbf8f1;
+  --text-primary: #fbf8f1;
+  --text-secondary: #dcd5c8;
+  --text-muted: #a39c8f;
+  --text-accent: #3ee6d8;
+  --text-on-dark: #fbf8f1;
+  --accent: #3ee6d8; /* driven per scene by CameraProvider */
+  --accent-rgb: 62, 230, 216;
+  --bg-backplate: rgba(10, 10, 13, 0.78);
+  --border-backplate: rgba(241, 234, 219, 0.14);
   --pad: clamp(16px, 3.2vw, 48px);
   color-scheme: dark;
 }
 
 html {
   background: var(--ink);
-  color: var(--bone);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 body { overflow-x: clip; }
-::selection { background: #c6f432; color: #0b0b0c; }
+::selection { background: var(--accent); color: #0a0a0b; }
 
 .mono { font-family: var(--font-mono); font-feature-settings: "zero"; }
 .serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
@@ -26,26 +34,19 @@ body { overflow-x: clip; }
 /* Display type: Archivo's width axis is part of the motion vocabulary. */
 .display {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 750;
   line-height: 0.86;
   letter-spacing: -0.045em;
   text-transform: uppercase;
   font-variation-settings: "wdth" 100;
 }
-.outline-text { color: transparent; -webkit-text-stroke: 1px rgba(237, 234, 227, 0.22); }
+.outline-text { color: transparent; -webkit-text-stroke: 1px rgba(241, 234, 219, 0.25); }
 
-:focus-visible { outline: 2px solid #c6f432; outline-offset: 3px; border-radius: 2px; }
-.skip { position: fixed; left: 12px; top: -60px; z-index: 100; background: #c6f432; color: #0b0b0c; padding: 8px 12px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.skip { position: fixed; left: 12px; top: -60px; z-index: 100; background: var(--accent); color: #0a0a0b; padding: 8px 12px; }
 .skip:focus { top: 12px; }
 
-/* Custom cursor hides the native one only once it is actually running. */
 html.has-cursor, html.has-cursor * { cursor: none !important; }
-
-/* Fine static grain: texture without motion cost. */
-.grain::after {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.05; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }

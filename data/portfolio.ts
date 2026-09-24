@@ -1,7 +1,7 @@
 // Single source of truth for all factual content. Presentation copy lives in components;
 // nothing in here should be invented — only facts from the original portfolio.
 
-export type Accent = "blue" | "acid" | "orange" | "bone";
+export type Accent = "cyan" | "orange" | "magenta" | "acid" | "ivory";
 
 export const PERSON = {
   name: "Tharun B.L",
@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
       "User-specific affordability analysis",
     ],
     link: null,
-    accent: "blue",
+    accent: "cyan",
   },
   {
     id: "voice",
@@ -120,7 +120,7 @@ export const PROJECTS: Project[] = [
       "Personalized picks",
     ],
     link: null,
-    accent: "bone",
+    accent: "magenta",
   },
 ];
 
@@ -131,7 +131,7 @@ export type SkillGroup = { group: string; accent: Accent; items: Skill[] };
 export const SKILLS: SkillGroup[] = [
   {
     group: "Frontend",
-    accent: "blue",
+    accent: "cyan",
     items: [
       { name: "HTML", info: "Semantic, accessible markup.", rel: ["CSS", "JavaScript", "Responsive Design"] },
       { name: "CSS", info: "Layout systems, animation, responsive design.", rel: ["HTML", "Animation", "Responsive Design"] },
@@ -168,7 +168,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     group: "Workflow",
-    accent: "bone",
+    accent: "ivory",
     items: [
       { name: "VS Code", info: "Daily driver.", rel: ["Git", "Debugging"] },
       { name: "AI Coding Tools", info: "Used deliberately, not as a crutch.", rel: ["Prompt Engineering", "Vibe Coding", "Rapid Prototyping"] },
@@ -214,7 +214,7 @@ export const TIMELINE: Timeline[] = [
     org: "Sri Shakthi Institute of Engineering and Technology",
     desc: "CSE student — learning the fundamentals underneath the interfaces, while building AI-powered applications and web experiences alongside.",
     focus: ["Computer Science", "Microsoft Excel — Productivity & Data Analysis (verified)"],
-    accent: "blue",
+    accent: "cyan",
   },
 ];
 

@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <title>Tharun B.L</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -29,7 +33,7 @@
 
   body{
     margin:0;
-    background: var(--bg);
+    background: transparent;
     color: var(--text);
     font-family: var(--font-body);
     font-size: 16px;
@@ -73,51 +77,51 @@
   @keyframes grain-drift{ from{ background-position: 0 0; } to{ background-position: 160px 160px; } }
 
   /* ============ cinematic background system ============ */
-  /* depth order: bg-stage-group (background, slowest) -> bg-atmosphere / bg-trails (midground) -> bgCanvas (foreground, fastest) -> vignette -> grain */
+  /* Layering: z-index -3 (Cinematic BG Image) -> -2 (Atmosphere) -> -1 (Canvas Particles & Trails) -> 1 (Content) -> 10 (Hero Photo) -> 20 (Nav) -> 30 (Cursor) */
   .bg-system{
-    position: fixed; inset: -8vh -8vw; z-index: -1; pointer-events: none;
+    position: fixed; inset: -6vh -6vw; width: 112vw; height: 112vh; z-index: -3; pointer-events: none;
     overflow: hidden;
   }
-  .bg-stage-group{ position: absolute; inset: 0; will-change: transform; }
-  .bg-stage{
-    position: absolute; inset: 0; opacity: 0;
-    transition: opacity 2.2s var(--ease);
-    background-repeat: no-repeat;
+  .bg-stage-group{
+    position: absolute; inset: 0; z-index: -3; will-change: transform;
   }
-  .bg-stage.active{ opacity: 1; }
-  .bg-stage-0{
-    background:
-      radial-gradient(ellipse 60% 50% at 10% 92%, rgba(255,77,31,0.15), transparent 60%),
-      radial-gradient(ellipse 50% 42% at 94% 6%, rgba(140,125,251,0.09), transparent 55%);
+  .bg-cinematic-img{
+    position: absolute; inset: 0;
+    background: transparent;
   }
-  .bg-stage-1{
+  .bg-stage-overlay{
+    position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 55% 46% at 18% 18%, rgba(140,125,251,0.13), transparent 55%),
-      radial-gradient(ellipse 58% 50% at 86% 82%, rgba(255,77,31,0.15), transparent 55%),
-      linear-gradient(118deg, transparent 42%, rgba(255,255,255,0.018) 50%, transparent 58%);
-  }
-  .bg-stage-2{
-    background:
-      radial-gradient(ellipse 68% 58% at 50% 28%, rgba(255,77,31,0.14), transparent 60%),
-      radial-gradient(ellipse 58% 52% at 78% 78%, rgba(140,125,251,0.15), transparent 55%),
-      radial-gradient(ellipse 48% 40% at 14% 68%, rgba(255,77,31,0.08), transparent 50%);
+      radial-gradient(ellipse 65% 55% at 15% 85%, rgba(255,77,31, var(--bg-orange-alpha, 0.16)), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 85% 75%, rgba(140,125,251, var(--bg-violet-alpha, 0.12)), transparent 55%),
+      radial-gradient(ellipse 45% 40% at 75% 15%, transparent 35%, rgba(5,5,5,0.82) 100%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    transition: opacity 0.8s var(--ease);
   }
 
-  /* midground: large slow atmospheric light forms */
-  .bg-atmosphere{ position: absolute; inset: 0; will-change: transform, opacity; transition: opacity 1.8s var(--ease); }
-  .atmo-blob{
-    position: absolute; border-radius: 50%; filter: blur(90px); mix-blend-mode: screen;
+  /* midground: volumetric atmospheric light forms */
+  .bg-atmosphere{
+    position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    will-change: transform, opacity; transition: opacity 1.2s var(--ease);
   }
-  .atmo-a{ width: 62vw; height: 62vw; left: -14vw; top: 4vh; background: radial-gradient(circle, rgba(255,77,31,0.16), transparent 68%); animation: atmo-drift-a 52s ease-in-out infinite; }
-  .atmo-b{ width: 52vw; height: 52vw; right: -12vw; top: 40vh; background: radial-gradient(circle, rgba(140,125,251,0.13), transparent 68%); animation: atmo-drift-b 64s ease-in-out infinite; }
-  .atmo-c{ width: 44vw; height: 44vw; left: 30vw; bottom: -10vh; background: radial-gradient(circle, rgba(255,77,31,0.1), transparent 70%); animation: atmo-drift-c 74s ease-in-out infinite; }
-  @keyframes atmo-drift-a{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(4vw,-3vh) scale(1.08); } }
-  @keyframes atmo-drift-b{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(-5vw,4vh) scale(1.1); } }
-  @keyframes atmo-drift-c{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(3vw,-4vh) scale(1.06); } }
+  .atmo-blob{
+    position: absolute; border-radius: 50%; filter: blur(95px); mix-blend-mode: screen;
+    opacity: var(--atmo-opacity, 0.6); transition: opacity 0.8s var(--ease);
+  }
+  .atmo-a{ width: 58vw; height: 58vw; left: -14vw; top: 12vh; background: radial-gradient(circle, rgba(255,77,31,0.18), transparent 68%); animation: atmo-drift-a 52s ease-in-out infinite; }
+  .atmo-b{ width: 50vw; height: 50vw; right: -12vw; bottom: 6vh; background: radial-gradient(circle, rgba(140,125,251,0.14), transparent 68%); animation: atmo-drift-b 64s ease-in-out infinite; }
+  .atmo-c{ width: 44vw; height: 44vw; left: 26vw; top: 48vh; background: radial-gradient(circle, rgba(255,77,31,0.11), transparent 70%); animation: atmo-drift-c 74s ease-in-out infinite; }
+  @keyframes atmo-drift-a{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(3vw,-3vh) scale(1.06); } }
+  @keyframes atmo-drift-b{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(-4vw,3vh) scale(1.08); } }
+  @keyframes atmo-drift-c{ 0%,100%{ transform: translate(0,0) scale(1); } 50%{ transform: translate(2vw,-2vh) scale(1.05); } }
   @media (prefers-reduced-motion: reduce){ .atmo-blob{ animation: none; } }
 
-  /* midground: thin flowing light trails */
-  .bg-trails{ position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform, opacity; transition: opacity 1.8s var(--ease); }
+  /* midground: flowing light trails — artfully steered away from the photo zone */
+  .bg-trails{
+    position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+    will-change: transform, opacity; transition: opacity 1.2s var(--ease);
+  }
   .trail{ fill: none; stroke-width: 1.1; stroke-linecap: round; opacity: 0.3; }
   .trail-1{ stroke: var(--accent); stroke-dasharray: 6 14; animation: trail-flow 34s linear infinite; }
   .trail-2{ stroke: var(--violet); stroke-dasharray: 4 18; animation: trail-flow 46s linear infinite reverse; opacity: 0.22; }
@@ -125,7 +129,10 @@
   @keyframes trail-flow{ to{ stroke-dashoffset: -400; } }
   @media (prefers-reduced-motion: reduce){ .trail{ animation: none; } }
 
-  #bgCanvas{ position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; will-change: transform; }
+  #bgCanvas{
+    position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+    opacity: 0.65; will-change: transform;
+  }
 
   @media (max-width: 720px){
     .trail-3, .atmo-c{ display: none; }
@@ -133,10 +140,12 @@
   }
 
   .bg-vignette{
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(0,0,0,0.4) 100%);
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 45%, transparent 30%, rgba(5,5,5,0.65) 75%, #050505 100%);
   }
-  @media (prefers-reduced-motion: reduce){ .bg-stage{ transition: none; } }
+  @media (prefers-reduced-motion: reduce){
+    .bg-stage-group, .bg-atmosphere, .bg-trails, #bgCanvas{ transform: none !important; }
+  }
 
   /* ============ intro loader ============ */
   #intro{
@@ -755,12 +764,13 @@
   .final-socials a:hover{ color: var(--accent); }
   .final-copy{ margin-top: 60px; font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-faint); letter-spacing: 0.06em; }
 </style>
+</head>
+<body>
 
 <div class="bg-system" id="bgSystem">
   <div class="bg-stage-group" id="bgStageGroup">
-    <div class="bg-stage bg-stage-0 active" data-stage="0"></div>
-    <div class="bg-stage bg-stage-1" data-stage="1"></div>
-    <div class="bg-stage bg-stage-2" data-stage="2"></div>
+    <div class="bg-cinematic-img" id="bgCinematicImg"></div>
+    <div class="bg-stage-overlay" id="bgStageOverlay"></div>
   </div>
   <div class="bg-atmosphere" id="bgAtmosphere">
     <div class="atmo-blob atmo-a"></div>
@@ -768,9 +778,9 @@
     <div class="atmo-blob atmo-c"></div>
   </div>
   <svg class="bg-trails" id="bgTrails" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
-    <path class="trail trail-1" d="M -50,180 C 200,80 400,320 650,200 S 1000,120 1080,260" />
-    <path class="trail trail-2" d="M -50,620 C 250,540 400,600 580,660 S 860,820 1080,860" />
-    <path class="trail trail-3" d="M -50,420 C 280,360 420,300 560,280 S 820,180 1080,140" />
+    <path class="trail trail-1" d="M -50,340 C 180,260 320,460 520,540 S 760,600 1080,680" />
+    <path class="trail trail-2" d="M -50,720 C 220,680 440,780 680,720 S 920,840 1080,880" />
+    <path class="trail trail-3" d="M -50,140 C 120,180 220,380 340,540 S 580,760 840,840" />
   </svg>
   <canvas id="bgCanvas"></canvas>
   <div class="bg-vignette"></div>
@@ -828,7 +838,7 @@
       <div class="hero-photo" id="heroPhoto" data-cursor="view">
         <span class="hp-br hp-br1"></span><span class="hp-br hp-br2"></span>
         <!-- PHOTO: replace this placeholder span with <img src="your-photo.jpg" alt="Tharun B.L"> to add your photo. The background system is geometrically excluded from this box and never renders inside it. -->
-        <span class="hero-photo-placeholder">Your Photo</span>
+        <span class="hero-photo-placeholder">YOUR PHOTO</span>
       </div>
     </div>
 
@@ -1507,64 +1517,80 @@
     var stageGroup = document.getElementById('bgStageGroup');
     var atmosphere = document.getElementById('bgAtmosphere');
     var trails = document.getElementById('bgTrails');
-    var stages = Array.prototype.slice.call(document.querySelectorAll('.bg-stage'));
     var canvas = document.getElementById('bgCanvas');
+    var heroPhoto = document.getElementById('heroPhoto');
     var isMobile = window.matchMedia('(max-width: 720px)').matches;
+    var depthScale = isMobile ? 0.45 : 1;
 
-    // map each section id to an environment "stage" (0 calm, 1 active, 2 intense)
-    // experience sits at 0: per the brief it should feel minimal, one light source, more negative space
-    var STAGE_MAP = {
-      hero: 0, about: 0, approach: 1, skills: 1,
-      work: 2, experience: 0, beyond: 1, contact: 0
+    // Detailed Section-Based Background State Machine
+    var SECTION_STATES = {
+      hero:       { intensity: 0.32, speed: 0.75, atmo: 0.45, brightness: 0.95, contrast: 1.05, orange: 0.12, violet: 0.08 },
+      statement:  { intensity: 0.36, speed: 0.85, atmo: 0.50, brightness: 0.98, contrast: 1.06, orange: 0.14, violet: 0.09 },
+      about:      { intensity: 0.45, speed: 0.90, atmo: 0.60, brightness: 1.00, contrast: 1.08, orange: 0.16, violet: 0.10 },
+      approach:   { intensity: 0.60, speed: 1.05, atmo: 0.70, brightness: 1.05, contrast: 1.12, orange: 0.12, violet: 0.18 }, // How I think: deeper flowing light, violet depth
+      skills:     { intensity: 0.80, speed: 1.30, atmo: 0.65, brightness: 1.02, contrast: 1.10, orange: 0.20, violet: 0.12 }, // Skills: more active particles
+      work:       { intensity: 1.00, speed: 1.45, atmo: 0.85, brightness: 1.10, contrast: 1.18, orange: 0.22, violet: 0.16 }, // Projects: most cinematic / deepest state
+      philosophy: { intensity: 0.65, speed: 1.10, atmo: 0.60, brightness: 0.98, contrast: 1.08, orange: 0.15, violet: 0.12 },
+      experience: { intensity: 0.35, speed: 0.80, atmo: 0.42, brightness: 0.92, contrast: 1.04, orange: 0.10, violet: 0.06 }, // Experience: calmer, single light source feel
+      education:  { intensity: 0.25, speed: 0.65, atmo: 0.32, brightness: 0.90, contrast: 1.02, orange: 0.08, violet: 0.06 }, // Education: minimal
+      beyond:     { intensity: 0.50, speed: 1.00, atmo: 0.55, brightness: 0.98, contrast: 1.06, orange: 0.14, violet: 0.14 }, // Exploring: subtle energy
+      contact:    { intensity: 0.28, speed: 0.60, atmo: 0.38, brightness: 0.88, contrast: 1.02, orange: 0.09, violet: 0.06 }  // Contact: dark / calm / final state
     };
-    var sectionEls = Object.keys(STAGE_MAP).map(function(id){ return document.getElementById(id); }).filter(Boolean);
-    if (!reduceMotion){
+
+    var currentTarget = SECTION_STATES.hero;
+    var sectionEls = Object.keys(SECTION_STATES).map(function(id){
+      return document.getElementById(id) || document.querySelector('.' + id);
+    }).filter(Boolean);
+
+    if (!reduceMotion && 'IntersectionObserver' in window){
       var stageObserver = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
           if (entry.isIntersecting){
-            var stage = STAGE_MAP[entry.target.id];
-            stages.forEach(function(s){ s.classList.toggle('active', s.dataset.stage == stage); });
-            targetIntensity = stage === 2 ? 1 : (stage === 1 ? 0.6 : 0.32);
+            var id = entry.target.id;
+            if (SECTION_STATES[id]){
+              currentTarget = SECTION_STATES[id];
+            }
           }
         });
-      }, { rootMargin: '-40% 0px -40% 0px' });
+      }, { rootMargin: '-35% 0px -35% 0px' });
       sectionEls.forEach(function(s){ stageObserver.observe(s); });
     }
 
-    // scroll + mouse parallax — true depth: background barely moves, midground moderate, foreground strongest
-    var scrollFrac = 0, mouseX = 0, mouseY = 0, targetIntensity = 0.32, intensity = 0.32;
-    var depthScale = isMobile ? 0.45 : 1;
-    function layerTransform(scrollMul, mouseMul, scaleMul){
-      var ty = scrollFrac * scrollMul * depthScale;
-      var t = 'translate(' + (mouseX * mouseMul).toFixed(1) + 'px,' + (ty + mouseY * mouseMul).toFixed(1) + 'px)';
-      if (scaleMul) t += ' scale(' + (1 + scrollFrac * scaleMul * depthScale).toFixed(3) + ')';
-      return t;
+    // Continuous scroll progress tracking + smooth lerp
+    var targetScroll = 0, currentScroll = 0;
+    var mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
+    var lastScrollY = window.scrollY;
+    var scrollVelocity = 0;
+
+    // Animated state values (smoothly blended)
+    var curIntensity = currentTarget.intensity;
+    var curSpeed = currentTarget.speed;
+    var curAtmo = currentTarget.atmo;
+    var curBrightness = currentTarget.brightness;
+    var curContrast = currentTarget.contrast;
+    var curOrange = currentTarget.orange;
+    var curViolet = currentTarget.violet;
+
+    function onScroll(){
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      targetScroll = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+      var delta = window.scrollY - lastScrollY;
+      scrollVelocity = Math.min(Math.abs(delta) * 0.04, 3);
+      lastScrollY = window.scrollY;
     }
-    function applyTransform(){
-      stageGroup.style.transform = layerTransform(-18, 0.15, 0.02);
-      atmosphere.style.transform = layerTransform(-46, 0.5, 0.015);
-      trails.style.transform = layerTransform(-52, 0.55, 0);
-      canvas.style.transform = layerTransform(-88, 0.9, 0);
-    }
-    if (!reduceMotion){
-      document.addEventListener('scroll', function(){
-        var doc = document.documentElement;
-        var max = doc.scrollHeight - window.innerHeight;
-        scrollFrac = max > 0 ? window.scrollY / max : 0;
-        applyTransform();
-      }, { passive: true });
-      if (finePointer){
-        document.addEventListener('mousemove', function(e){
-          mouseX = (e.clientX / window.innerWidth - 0.5) * 14;
-          mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
-          applyTransform();
-        });
-      }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (finePointer && !reduceMotion){
+      document.addEventListener('mousemove', function(e){
+        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 16;
+        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 12;
+      });
     }
 
-    // fine light-trail + particle canvas, two depth layers, intensity follows active stage
+    // Canvas particle engine with active photo exclusion zone
     if (canvas){
-      var heroPhoto = document.getElementById('heroPhoto');
       var ctx = canvas.getContext('2d');
       var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       function resize(){
@@ -1576,67 +1602,147 @@
       resize();
       window.addEventListener('resize', resize);
 
-      var farCount = isMobile ? 10 : 22;
-      var nearCount = isMobile ? 6 : 14;
+      var farCount = isMobile ? 12 : 28;
+      var nearCount = isMobile ? 8 : 18;
+
       function makeParticle(speedBase, clusterX){
         return {
           x: clusterX + (Math.random() - 0.5) * window.innerWidth * 0.7,
           y: Math.random() * window.innerHeight,
           r: 0.5 + Math.random() * 1.6,
           speed: speedBase * (0.4 + Math.random() * 1.2),
-          wobbleAmp: 6 + Math.random() * 18,
+          wobbleAmp: 5 + Math.random() * 18,
           wobbleSpeed: 0.002 + Math.random() * 0.006,
           phase: Math.random() * Math.PI * 2,
-          hue: Math.random() > 0.55 ? '255,77,31' : '140,125,251',
-          alpha: 0.12 + Math.random() * 0.26,
+          hue: Math.random() > 0.52 ? '255,77,31' : '140,125,251',
+          alpha: 0.12 + Math.random() * 0.28,
           breathe: 0.006 + Math.random() * 0.014
         };
       }
-      // loose clusters rather than uniform scatter — a few gravity centers per depth
+
       function makeCluster(count, speedBase){
-        var centers = [window.innerWidth * 0.2, window.innerWidth * 0.55, window.innerWidth * 0.85];
-        return Array.from({ length: count }, function(_, i){ return makeParticle(speedBase, centers[i % centers.length]); });
+        var centers = [window.innerWidth * 0.18, window.innerWidth * 0.52, window.innerWidth * 0.82];
+        return Array.from({ length: count }, function(_, i){
+          return makeParticle(speedBase, centers[i % centers.length]);
+        });
       }
-      var far = makeCluster(farCount, 0.05);
-      var near = makeCluster(nearCount, 0.15);
+
+      var farParticles = makeCluster(farCount, 0.06);
+      var nearParticles = makeCluster(nearCount, 0.18);
       var tick = 0;
 
-      function drawParticles(list, exclude){
+      function drawParticleList(list, exclude, speedMult){
         list.forEach(function(p){
-          p.y -= p.speed * intensity;
-          if (p.y < -10){ p.y = window.innerHeight + 10; }
+          var totalSpeed = p.speed * (curSpeed + scrollVelocity * 0.4) * speedMult;
+          p.y -= totalSpeed;
+          if (p.y < -12){ p.y = window.innerHeight + 12; p.x = Math.random() * window.innerWidth; }
+
           var wobble = Math.sin(tick * p.wobbleSpeed + p.phase) * p.wobbleAmp;
-          var px = p.x + wobble, py = p.y;
-          // protected exclusion zone: the hero photo is a stable foreground element —
-          // no particle may render inside it or in a small margin around it
-          if (exclude && px > exclude.left && px < exclude.right && py > exclude.top && py < exclude.bottom) return;
+          var px = p.x + wobble;
+          var py = p.y;
+
+          // STRICT PHOTO EXCLUSION ZONE:
+          // The hero photo is a dedicated foreground element that must NEVER be overlapped by particles
+          if (exclude){
+            // Deflect particles approaching boundary so they part around the portrait
+            if (py >= exclude.top - 20 && py <= exclude.bottom + 20){
+              var centerX = (exclude.left + exclude.right) * 0.5;
+              if (px > exclude.left - 36 && px < centerX){
+                p.x -= 0.6;
+              } else if (px >= centerX && px < exclude.right + 36){
+                p.x += 0.6;
+              }
+            }
+            // Complete exclusion check: if inside the bounding box + margin, DO NOT RENDER
+            if (px >= exclude.left && px <= exclude.right && py >= exclude.top && py <= exclude.bottom){
+              return;
+            }
+          }
+
           var breathe = 0.55 + Math.sin(tick * p.breathe + p.phase) * 0.45;
           ctx.beginPath();
           ctx.arc(px, py, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + p.hue + ',' + (p.alpha * breathe * intensity * 1.5).toFixed(3) + ')';
+          ctx.fillStyle = 'rgba(' + p.hue + ',' + (p.alpha * breathe * curIntensity * 1.5).toFixed(3) + ')';
           ctx.fill();
         });
       }
-      function drawFrame(){
+
+      function updateLayers(){
+        // Smooth lerp continuous scroll and mouse parallax
+        currentScroll += (targetScroll - currentScroll) * 0.08;
+        mouseX += (targetMouseX - mouseX) * 0.06;
+        mouseY += (targetMouseY - mouseY) * 0.06;
+        scrollVelocity *= 0.92;
+
+        // Smooth lerp section states
+        curIntensity += (currentTarget.intensity - curIntensity) * 0.035;
+        curSpeed += (currentTarget.speed - curSpeed) * 0.035;
+        curAtmo += (currentTarget.atmo - curAtmo) * 0.035;
+        curBrightness += (currentTarget.brightness - curBrightness) * 0.035;
+        curContrast += (currentTarget.contrast - curContrast) * 0.035;
+        curOrange += (currentTarget.orange - curOrange) * 0.035;
+        curViolet += (currentTarget.violet - curViolet) * 0.035;
+
+        // Update CSS variables for cinematic background image and atmosphere
+        document.documentElement.style.setProperty('--bg-brightness', curBrightness.toFixed(3));
+        document.documentElement.style.setProperty('--bg-contrast', curContrast.toFixed(3));
+        document.documentElement.style.setProperty('--atmo-opacity', curAtmo.toFixed(3));
+        document.documentElement.style.setProperty('--bg-orange-alpha', curOrange.toFixed(3));
+        document.documentElement.style.setProperty('--bg-violet-alpha', curViolet.toFixed(3));
+
+        // Parallax depth transforms:
+        // Background slowest (-30px), atmosphere medium (-75px), trails (-95px), canvas foreground (-130px)
+        // THE PHOTO DOES NOT PARTICIPATE IN BACKGROUND PARALLAX (remains stable foreground)
+        if (!reduceMotion){
+          var bgY = -currentScroll * 32 * depthScale + mouseY * 0.15;
+          var bgX = mouseX * 0.15;
+          var bgScale = 1.04 + currentScroll * 0.04 * depthScale;
+          stageGroup.style.transform = 'translate(' + bgX.toFixed(1) + 'px,' + bgY.toFixed(1) + 'px) scale(' + bgScale.toFixed(3) + ')';
+
+          var atmoY = -currentScroll * 75 * depthScale + mouseY * 0.45;
+          var atmoX = mouseX * 0.45;
+          atmosphere.style.transform = 'translate(' + atmoX.toFixed(1) + 'px,' + atmoY.toFixed(1) + 'px)';
+
+          var trailsY = -currentScroll * 95 * depthScale + mouseY * 0.55;
+          var trailsX = mouseX * 0.55;
+          trails.style.transform = 'translate(' + trailsX.toFixed(1) + 'px,' + trailsY.toFixed(1) + 'px)';
+
+          var canY = -currentScroll * 130 * depthScale + mouseY * 0.85;
+          var canX = mouseX * 0.85;
+          canvas.style.transform = 'translate(' + canX.toFixed(1) + 'px,' + canY.toFixed(1) + 'px)';
+        }
+
+        // Render Canvas Frame
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         tick++;
-        intensity += (targetIntensity - intensity) * 0.02;
+
+        // Calculate dynamic hero photo exclusion bounding box
         var exclude = null;
         if (heroPhoto){
           var r = heroPhoto.getBoundingClientRect();
-          if (r.width > 0){ exclude = { left: r.left - 24, right: r.right + 24, top: r.top - 24, bottom: r.bottom + 24 }; }
+          if (r.bottom > -20 && r.top < window.innerHeight + 20 && r.width > 0){
+            var pad = isMobile ? 18 : 28;
+            exclude = {
+              left: r.left - pad,
+              right: r.right + pad,
+              top: r.top - pad,
+              bottom: r.bottom + pad
+            };
+          }
         }
-        drawParticles(far, exclude);
-        drawParticles(near, exclude);
-        atmosphere.style.opacity = (0.55 + intensity * 0.45).toFixed(3);
-        trails.style.opacity = (0.35 + intensity * 0.65).toFixed(3);
+
+        drawParticleList(farParticles, exclude, 0.75);
+        drawParticleList(nearParticles, exclude, 1.25);
       }
 
       var raf = null;
-      function loop(){ drawFrame(); raf = requestAnimationFrame(loop); }
+      function loop(){
+        updateLayers();
+        raf = requestAnimationFrame(loop);
+      }
 
       if (reduceMotion){
-        drawFrame();
+        updateLayers();
       } else {
         loop();
         document.addEventListener('visibilitychange', function(){
@@ -1648,3 +1754,5 @@
   })();
 })();
 </script>
+</body>
+</html>
