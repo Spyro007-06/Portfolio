@@ -14,12 +14,12 @@ export const metadata: Metadata = {
   icons: { icon: "/icon.svg" },
 };
 
-export const viewport: Viewport = { themeColor: "#0B0B0C" };
+export const viewport: Viewport = { themeColor: "#0A0A0B" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
-      <body className="grain font-sans text-bone">{children}</body>
+      <body className="font-sans text-bone">{children}</body>
     </html>
   );
 }
