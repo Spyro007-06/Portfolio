@@ -1,0 +1,140 @@
+.scene--hero .env {
+  visibility: visible;
+}
+.statue {
+  position: absolute;
+  right: -14vw;
+  bottom: 0;
+  height: 64svh;
+  aspect-ratio: 1061 / 1351;
+}
+.statue img {
+  width: 100%;
+  height: 100%;
+}
+.mist {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  height: 46%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 40% 55% at 28% 62%, rgba(214, 226, 228, 0.34), transparent 70%),
+    radial-gradient(ellipse 45% 50% at 72% 55%, rgba(241, 232, 215, 0.26), transparent 70%);
+  filter: blur(26px);
+}
+.mist--back {
+  bottom: 6%;
+  opacity: 0.75;
+}
+.mist--front {
+  bottom: -22%;
+}
+.veil--hero {
+  background:
+    linear-gradient(0deg, var(--abyss), rgba(11, 32, 38, 0.96) 6%, rgba(11, 32, 38, 0.55) 46%, rgba(11, 32, 38, 0.1) 80%),
+    linear-gradient(180deg, rgba(11, 32, 38, 0.6), transparent 22%);
+}
+.hero-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  padding: 130px var(--pad) 46px;
+}
+.hero-copy {
+  position: relative;
+  max-width: 720px;
+}
+.hero-name {
+  margin: 22px 0 22px;
+  font: 500 clamp(52px, min(7.6vw, 14vh), 136px) / 0.9 var(--display);
+  letter-spacing: 0.004em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero-name .line-in {
+  color: transparent;
+  background: linear-gradient(180deg, #f8f0e2 22%, #e6cfab 64%, #c49a63 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  padding-right: 0.04em;
+}
+.hero-role {
+  font: 600 12px/1.6 var(--sans);
+  letter-spacing: 0.52em;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+.hero-line {
+  max-width: 24ch;
+  margin: 18px 0 38px;
+  font: italic 400 clamp(21px, 1.8vw, 28px) / 1.38 var(--display);
+  color: rgba(241, 232, 215, 0.88);
+}
+.hero-meta-wrap {
+  margin-top: 44px;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 10.5px/1 var(--sans);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.hero-meta .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--bronze);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene--hero {
+    height: 250vh;
+  }
+  .statue {
+    right: 4vw;
+    bottom: -4vh;
+    height: 88vh;
+    transform-origin: 50% 85%;
+    will-change: transform;
+  }
+  /* grade the statue into the plate: cool shadow on the side away from the sunrise */
+  .statue::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    -webkit-mask: url('/art/statue.webp') center / 100% 100% no-repeat;
+    mask: url('/art/statue.webp') center / 100% 100% no-repeat;
+    background: linear-gradient(100deg, rgba(11, 32, 38, 0.78) 8%, rgba(11, 32, 38, 0.32) 52%, rgba(255, 190, 120, 0.06) 100%);
+    mix-blend-mode: multiply;
+  }
+  .veil--hero {
+    background:
+      linear-gradient(90deg, rgba(11, 32, 38, 0.94) 0%, rgba(11, 32, 38, 0.7) 30%, rgba(11, 32, 38, 0) 60%),
+      linear-gradient(0deg, rgba(11, 32, 38, 0.55), transparent 32%),
+      linear-gradient(180deg, rgba(11, 32, 38, 0.6), transparent 20%);
+  }
+  .temple-ring {
+    left: 52%;
+    top: 51%;
+    width: 9%;
+    aspect-ratio: 0.8;
+    translate: -50% -58%;
+    border: 1px solid rgba(214, 178, 128, 0.85);
+    border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+    box-shadow: 0 0 40px rgba(255, 210, 150, 0.25), inset 0 0 30px rgba(255, 210, 150, 0.18);
+    opacity: 0;
+  }
+  .hero-stage {
+    justify-content: center;
+    padding: 110px var(--pad) 56px;
+  }
+  .hero-meta-wrap {
+    position: absolute;
+    left: var(--pad);
+    bottom: 40px;
+  }
+}

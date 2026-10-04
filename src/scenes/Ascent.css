@@ -1,0 +1,173 @@
+.veil--ascent {
+  background: var(--seam), linear-gradient(0deg, var(--abyss), rgba(11, 32, 38, 0.97) 14%, rgba(11, 32, 38, 0.62) 55%, rgba(11, 32, 38, 0.3) 100%);
+}
+.ascent-stage {
+  padding: 120px var(--pad) 90px;
+}
+.ascent-copy {
+  max-width: 540px;
+}
+.milestones {
+  position: relative;
+  display: grid;
+  gap: 34px;
+  margin-top: 48px;
+  padding-left: 26px;
+  border-left: 1px solid rgba(181, 138, 88, 0.2);
+}
+/* the climbed stretch of the path: drawn by the scroll on phones (--trail), fully drawn otherwise */
+.milestones::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: linear-gradient(var(--bronze), rgba(181, 138, 88, 0.55));
+  transform-origin: top;
+  scale: 1 var(--trail, 1);
+}
+.milestone-in {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+.medal {
+  display: block;
+  width: 76px;
+  aspect-ratio: 1;
+  padding: 4px;
+  border: 1px solid rgba(181, 138, 88, 0.75);
+  border-radius: 50%;
+  background: var(--abyss);
+  box-shadow: 0 0 40px -10px rgba(255, 196, 128, 0.35);
+  transition: box-shadow 0.7s var(--ease), border-color 0.7s;
+}
+.milestone.is-active .medal {
+  border-color: var(--bronze);
+  box-shadow: 0 0 0 6px rgba(181, 138, 88, 0.12), 0 0 60px -6px rgba(255, 196, 128, 0.6);
+}
+.medal img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.milestone h3 {
+  font: 500 26px/1.1 var(--display);
+  text-transform: uppercase;
+}
+.milestone h3 em {
+  display: block;
+  margin-top: 2px;
+  font: italic 500 19px/1.2 var(--display);
+  text-transform: none;
+  color: var(--bronze);
+}
+.milestone-text p {
+  margin-top: 8px;
+  font-size: 14.5px;
+  color: var(--text);
+}
+.milestone-text .milestone-meta {
+  font: 600 10.5px/1.4 var(--sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene--ascent {
+    height: 200vh;
+  }
+  .veil--ascent {
+    background:
+      linear-gradient(90deg, rgba(11, 32, 38, 0.9) 0%, rgba(11, 32, 38, 0.55) 34%, rgba(11, 32, 38, 0.08) 70%),
+      linear-gradient(0deg, rgba(11, 32, 38, 0.85) 0%, rgba(11, 32, 38, 0.2) 45%, transparent 70%);
+  }
+  .dawn {
+    left: 58%;
+    top: -8%;
+    width: 42%;
+    height: 62%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 202, 128, 0.62), rgba(255, 170, 90, 0.18) 55%, transparent);
+    mix-blend-mode: screen;
+  }
+  .ascent-stage {
+    padding: 0;
+  }
+  .ascent-copy {
+    position: absolute;
+    top: clamp(96px, 15vh, 150px);
+    left: calc(var(--pad) + 1vw);
+  }
+  .trail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+    stroke-linecap: round;
+  }
+  .trail-base {
+    stroke: rgba(181, 138, 88, 0.22);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+  }
+  .trail-line {
+    stroke: var(--bronze);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 6px rgba(255, 196, 128, 0.55));
+  }
+  .milestones {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .milestones::before {
+    content: none;
+  }
+  .milestone {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: min(270px, 19vw);
+    translate: -50% calc(-1 * clamp(44px, 6.4vh, 60px));
+  }
+  /* the lowest stop has the longest text; widen it so it stays three lines on short laptop screens */
+  .milestone:first-child {
+    width: min(340px, 25vw);
+  }
+  /* GSAP reveals the milestone; this layer handles focus, so the two never fight over opacity */
+  .milestone-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0.42;
+    transition: opacity 0.7s var(--ease), scale 0.7s var(--ease);
+  }
+  .milestone.is-active .milestone-in {
+    opacity: 1;
+    scale: 1.05;
+  }
+  .medal {
+    width: clamp(88px, 12.8vh, 120px);
+  }
+  .milestone-text {
+    margin-top: 16px;
+  }
+  .milestone h3 {
+    font-size: clamp(22px, 2vw, 28px);
+  }
+  .milestone-text p {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+}
