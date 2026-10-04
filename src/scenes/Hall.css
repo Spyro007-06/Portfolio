@@ -1,0 +1,136 @@
+.portal {
+  position: absolute;
+  inset: 0;
+}
+.veil--hall {
+  background: var(--seam), linear-gradient(0deg, var(--abyss), rgba(11, 32, 38, 0.97) 12%, rgba(11, 32, 38, 0.6) 55%, rgba(11, 32, 38, 0.25) 100%);
+}
+.hall-stage {
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding: 46svh var(--pad) 72px;
+}
+.hall-copy {
+  max-width: 600px;
+}
+.ornament {
+  width: 220px;
+  height: 12px;
+  margin: -6px 0 26px;
+  fill: none;
+  stroke: var(--bronze);
+  stroke-width: 1;
+  overflow: visible;
+}
+.qualities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 18px 34px;
+  margin-top: 30px;
+}
+.qualities li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 600 12px/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+.q-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(181, 138, 88, 0.6);
+  border-radius: 50%;
+  color: var(--bronze);
+}
+.signature {
+  margin-top: 34px;
+  font: italic 500 26px/1 var(--display);
+  color: var(--bronze);
+}
+.hall-quote {
+  max-width: 34ch;
+  margin-top: 26px;
+  padding-left: 22px;
+  border-left: 1px solid rgba(181, 138, 88, 0.45);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene--hall {
+    height: 170vh;
+  }
+  .portal {
+    clip-path: inset(0% 0% 0% 0% round 0% 0% 0% 0% / 0% 0% 0% 0%);
+  }
+  .veil--hall {
+    background:
+      linear-gradient(90deg, rgba(11, 32, 38, 0.12) 0%, rgba(11, 32, 38, 0.5) 42%, rgba(11, 32, 38, 0.9) 66%),
+      linear-gradient(0deg, rgba(11, 32, 38, 0.5), transparent 30%);
+  }
+  .hall-light {
+    left: 2%;
+    top: 0;
+    width: 34%;
+    height: 100%;
+    background: radial-gradient(ellipse 50% 46% at 50% 34%, rgba(255, 204, 145, 0.42), transparent 72%);
+    mix-blend-mode: screen;
+  }
+  .fg-column {
+    position: absolute;
+    bottom: -14vh;
+    height: 134vh;
+    width: auto;
+    filter: brightness(0.3) saturate(0.6);
+    will-change: transform;
+  }
+  .fg-column--l {
+    left: -9vw;
+  }
+  .fg-column--r {
+    right: -10vw;
+  }
+  .portal-ring {
+    position: absolute;
+    border: 1px solid rgba(214, 178, 128, 0.9);
+    border-radius: 50% 50% 0 0 / 34% 34% 0 0;
+    box-shadow: 0 0 60px rgba(255, 210, 150, 0.28);
+  }
+  .hall-stage {
+    align-items: center;
+    justify-content: flex-end;
+    padding: 96px calc(var(--pad) + 4vw) 32px var(--pad);
+  }
+  .hall-copy {
+    width: min(560px, 42vw);
+  }
+  .hall-copy .h2 {
+    font-size: clamp(40px, min(4.6vw, 7.8vh), 80px);
+  }
+  /* on short laptop screens the gaps give way first, so the whole column clears the nav */
+  .hall-copy .body {
+    max-width: 54ch;
+  }
+  .ornament {
+    margin-bottom: min(26px, 3vh);
+  }
+  .qualities {
+    row-gap: min(18px, 2vh);
+    margin-top: min(30px, 3.4vh);
+  }
+  .signature {
+    margin-top: min(34px, 3.6vh);
+  }
+  /* the quote steps out of the column and rests at the statue's feet */
+  .hall-quote {
+    position: absolute;
+    left: calc(var(--pad) + 2vw);
+    bottom: 52px;
+    max-width: 30ch;
+    margin: 0;
+  }
+}

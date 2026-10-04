@@ -1,0 +1,95 @@
+.veil--gates {
+  background: var(--seam), linear-gradient(0deg, var(--abyss), rgba(11, 32, 38, 0.97) 16%, rgba(11, 32, 38, 0.62) 55%, rgba(11, 32, 38, 0.3) 100%);
+}
+.gates-stage {
+  display: grid;
+  gap: 40px;
+  min-height: 100svh;
+  padding: 120px var(--pad) 72px;
+}
+.gates-copy {
+  max-width: 600px;
+}
+.channels {
+  display: grid;
+  gap: 4px;
+  max-width: 460px;
+}
+.channel a,
+.channel-static {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  font-size: 15px;
+}
+.channel small {
+  display: block;
+  font: 600 10px/1.4 var(--sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.channel-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(181, 138, 88, 0.55);
+  border-radius: 50%;
+  background: rgba(7, 21, 25, 0.4);
+  color: var(--ivory);
+  transition: background 0.35s, border-color 0.35s;
+}
+.channel a:hover .channel-icon {
+  border-color: var(--bronze);
+  background: rgba(181, 138, 88, 0.2);
+}
+.channel a:hover {
+  color: #f6e7cc;
+}
+.closing {
+  font: italic 500 clamp(24px, 2.2vw, 34px) / 1.2 var(--display);
+  color: var(--bronze);
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene--gates {
+    height: 170vh;
+  }
+  .veil--gates {
+    background:
+      linear-gradient(90deg, rgba(11, 32, 38, 0.92) 0%, rgba(11, 32, 38, 0.68) 32%, rgba(11, 32, 38, 0.06) 62%),
+      linear-gradient(0deg, rgba(11, 32, 38, 0.65), transparent 34%);
+  }
+  .gate-light {
+    left: 46%;
+    top: 4%;
+    width: 40%;
+    height: 82%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 218, 156, 0.55), rgba(255, 196, 128, 0.14) 60%, transparent);
+    mix-blend-mode: screen;
+  }
+  .gates-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(22px, 4vh, 40px);
+    padding: 100px var(--pad) 56px calc(var(--pad) + 1vw);
+  }
+  .gates-copy .h2 {
+    margin-bottom: 22px;
+  }
+  .channels {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    gap: 2px 40px;
+    max-width: 640px;
+  }
+  .closing {
+    position: absolute;
+    right: calc(var(--pad) + 2vw);
+    bottom: 64px;
+  }
+}

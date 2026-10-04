@@ -1,0 +1,157 @@
+.forge-shade {
+  background: var(--seam), linear-gradient(0deg, var(--abyss), rgba(11, 32, 38, 0.96) 10%, rgba(11, 32, 38, 0.78) 55%, rgba(11, 32, 38, 0.45) 100%);
+}
+.veil--forge {
+  background: var(--abyss);
+}
+.forge-stage {
+  min-height: 100svh;
+  padding: 120px var(--pad) 72px;
+}
+.forge-copy {
+  max-width: 720px;
+}
+.forge-copy .body {
+  max-width: 56ch;
+}
+.tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 560px;
+  margin-top: 38px;
+  perspective: 900px;
+}
+.tool {
+  transform-style: preserve-3d;
+}
+.tool-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 150px;
+  padding: 26px 12px 22px;
+  text-align: center;
+  border: 1px solid rgba(181, 138, 88, 0.32);
+  border-radius: 90px 90px 16px 16px;
+  background: linear-gradient(180deg, rgba(16, 47, 56, 0.6), rgba(7, 21, 25, 0.88));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transform-style: preserve-3d;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+/* a candle of forge light at the foot of every arch */
+.tool-card::before {
+  content: '';
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: radial-gradient(closest-side, rgba(255, 196, 128, 0.95), transparent);
+}
+/* the edge catches the light where the pointer is */
+.tool-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(140px circle at var(--gx, 50%) var(--gy, 100%), rgba(255, 196, 128, 0.85), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.tool-card:hover {
+  border-color: rgba(181, 138, 88, 0.6);
+  box-shadow: 0 24px 50px -24px rgba(255, 150, 70, 0.4);
+}
+.tool-card:hover::after {
+  opacity: 1;
+}
+.tool-mark {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(0, 0, 0, 0.5));
+}
+.tool-card h3 {
+  font: 600 13px/1.25 var(--sans);
+  letter-spacing: 0.02em;
+}
+.tool-card p {
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+@media (min-width: 640px) {
+  .tools {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .scene--forge {
+    height: 210vh;
+  }
+  .forge-shade {
+    background:
+      linear-gradient(90deg, rgba(11, 32, 38, 0.9) 0%, rgba(11, 32, 38, 0.62) 38%, rgba(11, 32, 38, 0.05) 64%),
+      linear-gradient(0deg, rgba(11, 32, 38, 0.6), transparent 32%);
+  }
+  .fire {
+    left: 60%;
+    top: 62%;
+    width: 22%;
+    height: 26%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 158, 70, 0.7), rgba(255, 120, 40, 0.18) 60%, transparent);
+    mix-blend-mode: screen;
+    animation: kindle 2.4s ease-in-out infinite alternate;
+  }
+  .molten {
+    left: 84%;
+    top: 58%;
+    width: 16%;
+    height: 34%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 170, 80, 0.55), transparent);
+    mix-blend-mode: screen;
+    animation: kindle 1.7s ease-in-out infinite alternate-reverse;
+  }
+  .forge-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px var(--pad) 48px;
+  }
+  .tools {
+    width: min(660px, 48vw);
+    max-width: none;
+    margin-top: clamp(22px, 4vh, 40px);
+  }
+  .tool-card {
+    min-height: 0;
+    height: clamp(116px, 18vh, 180px);
+    gap: 8px;
+    padding-block: 18px 14px;
+  }
+}
+
+/* GSAP owns the opacity; the flicker only breathes the size */
+@keyframes kindle {
+  from {
+    scale: 0.94;
+  }
+  to {
+    scale: 1.06;
+  }
+}
