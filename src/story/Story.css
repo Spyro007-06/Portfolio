@@ -1,0 +1,444 @@
+/* Phones only: the portfolio as full-screen story cards. Nothing here touches the scroll version. */
+.story {
+  --bar: 84px;
+  position: fixed;
+  inset: 0;
+  background: var(--abyss);
+}
+
+/* ---------- top bar: progress segments, monogram, chapter, counter ---------- */
+.story-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  padding: 12px 16px 14px;
+  background: linear-gradient(180deg, rgba(7, 21, 25, 0.78), rgba(7, 21, 25, 0));
+  transition: background 0.5s;
+}
+.segs {
+  display: flex;
+  gap: 4px;
+}
+.seg {
+  position: relative;
+  flex: 1;
+  height: 16px; /* a comfortable tap target around a 2px line */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.seg::before,
+.seg::after {
+  content: '';
+  position: absolute;
+  inset: 7px 0;
+  border-radius: 2px;
+  background: rgba(241, 232, 215, 0.24);
+}
+.seg::after {
+  background: var(--bronze);
+  transform-origin: left;
+  scale: 0 1;
+  transition: scale 0.6s var(--ease);
+}
+.seg.is-past::after,
+.seg.is-on::after {
+  scale: 1 1;
+}
+.story-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+.story-meta .monogram {
+  font-size: 26px;
+}
+.story-chapter {
+  flex: 1;
+  overflow: hidden;
+  font: 600 10px/1.2 var(--sans);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--bronze);
+}
+.story-count {
+  font: 600 11px/1 var(--sans);
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+/* over the ivory project cards the bar turns to ink */
+.story[data-tone] .story-bar {
+  background: linear-gradient(180deg, rgba(241, 232, 215, 0.9), rgba(241, 232, 215, 0));
+}
+.story[data-tone] .seg::before {
+  background: rgba(23, 27, 27, 0.16);
+}
+.story[data-tone] .monogram {
+  color: var(--ink);
+}
+.story[data-tone] .story-chapter {
+  color: #8a6438;
+}
+.story[data-tone] .story-count {
+  color: rgba(23, 27, 27, 0.55);
+}
+
+/* ---------- the swipeable track ---------- */
+.story-track {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.story-track::-webkit-scrollbar {
+  display: none;
+}
+.sc {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.sc-art {
+  position: absolute;
+  inset: 0;
+  scale: 1.1;
+  transition: scale 9s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.sc.is-on .sc-art {
+  scale: 1;
+}
+.sc-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, rgba(11, 32, 38, 0.98) 18%, rgba(11, 32, 38, 0.7) 52%, rgba(11, 32, 38, 0.2) 82%),
+    linear-gradient(180deg, rgba(7, 21, 25, 0.7), transparent 22%);
+}
+/* copy sits low on the card like a story caption (an auto top margin, not justify-content, so a card too long
+   for a small phone scrolls within itself instead of spilling off the top) */
+.sc-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--bar) 22px 30px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sc-body > :first-child {
+  margin-top: auto;
+}
+
+/* each element rises in, in its turn, when its card comes on screen */
+.rv {
+  opacity: 0;
+  translate: 0 18px;
+  transition:
+    opacity 0.7s var(--ease),
+    translate 0.9s var(--ease);
+}
+.sc.is-on .rv {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: calc(var(--d) * 90ms + 120ms);
+}
+
+/* ---------- shared type ---------- */
+.sc .label {
+  margin-bottom: 18px;
+}
+.sc-h {
+  margin: 0 0 18px;
+  font-size: clamp(34px, 10vw, 44px);
+}
+.sc .body {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ---------- cover ---------- */
+.sc-statue {
+  position: absolute;
+  right: -18vw;
+  bottom: 28svh;
+  height: 56svh;
+  width: auto;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+}
+.sc--cover .sc-veil {
+  background:
+    linear-gradient(0deg, rgba(11, 32, 38, 0.98) 22%, rgba(11, 32, 38, 0.6) 46%, transparent 70%),
+    linear-gradient(180deg, rgba(7, 21, 25, 0.6), transparent 20%);
+}
+.sc-name {
+  margin: 14px 0 12px;
+  font: 500 clamp(44px, 14vw, 64px) / 0.9 var(--display);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(180deg, #f8f0e2 22%, #e6cfab 64%, #c49a63 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.sc-role {
+  font: 600 11px/1.6 var(--sans);
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+}
+.sc-line {
+  max-width: 24ch;
+  margin-top: 14px;
+  font: italic 400 21px/1.35 var(--display);
+  color: rgba(241, 232, 215, 0.88);
+}
+.sc-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  font: 600 11px/1 var(--sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.sc.is-on .sc-hint .icon {
+  animation: nudge 1.6s var(--ease) infinite;
+}
+@keyframes nudge {
+  50% {
+    translate: 6px 0;
+  }
+}
+
+/* ---------- about: qualities and creed ---------- */
+.sc-qualities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 14px;
+}
+.sc-qualities li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 11.5px/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sc-qualities .q-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(181, 138, 88, 0.6);
+  border-radius: 50%;
+  color: var(--bronze);
+}
+.sc-quote {
+  margin-top: 30px;
+  padding-left: 18px;
+  border-left: 1px solid rgba(181, 138, 88, 0.5);
+}
+.sc-sign {
+  margin-top: 18px;
+  font: italic 500 22px/1 var(--display);
+  color: var(--bronze);
+}
+
+/* ---------- forge: tool tiles ---------- */
+.sc-tools {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 22px;
+}
+.sc-tools li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 4px 10px;
+  border: 1px solid rgba(181, 138, 88, 0.3);
+  border-radius: 40px 40px 10px 10px;
+  background: linear-gradient(180deg, rgba(16, 47, 56, 0.7), rgba(7, 21, 25, 0.9));
+  font: 600 9.5px/1.2 var(--sans);
+  text-align: center;
+}
+.sc-tools svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- pantheon: ivory project cards ---------- */
+.sc--project {
+  color: var(--ink);
+  background: radial-gradient(ellipse 90% 60% at 50% 30%, #f8f2e6, var(--ivory) 70%, var(--mist));
+}
+.sc--project .sc-body > :last-child {
+  margin-bottom: auto;
+}
+.sc-frame {
+  height: clamp(170px, 36svh, 360px);
+  margin: 0 0 22px;
+  overflow: hidden;
+  border-radius: 999px 999px 14px 14px / 46% 46% 14px 14px;
+  background: var(--petrol);
+  box-shadow: 0 30px 60px -36px rgba(70, 46, 20, 0.6);
+}
+.sc-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scale: 1.12;
+  transition: scale 9s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.sc.is-on .sc-frame img {
+  scale: 1;
+}
+.sc-n {
+  font: 600 11px/1 var(--sans);
+  letter-spacing: 0.3em;
+  color: #8a6438;
+}
+.sc-title {
+  margin: 12px 0 6px;
+  font: 500 clamp(30px, 9vw, 40px) / 0.98 var(--display);
+  text-transform: uppercase;
+}
+.sc-tag {
+  font: italic 500 19px/1.3 var(--display);
+  color: #6b5131;
+}
+.sc-desc {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(23, 27, 27, 0.78);
+}
+.sc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+.sc-chips li {
+  padding: 7px 11px;
+  border: 1px solid rgba(23, 27, 27, 0.16);
+  border-radius: 999px;
+  font: 600 9.5px/1 var(--sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(23, 27, 27, 0.75);
+}
+.sc-cta {
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+/* ---------- ascent: milestones ---------- */
+.sc-steps {
+  display: grid;
+  gap: 18px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(181, 138, 88, 0.45);
+}
+.sc-steps li {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.sc-steps img {
+  width: 50px;
+  height: 50px;
+  padding: 3px;
+  border: 1px solid rgba(181, 138, 88, 0.75);
+  border-radius: 50%;
+  background: var(--abyss);
+  object-fit: cover;
+}
+.sc-steps h3 {
+  font: 500 21px/1.1 var(--display);
+  text-transform: uppercase;
+}
+.sc-steps em {
+  font: italic 500 16px/1 var(--display);
+  text-transform: none;
+  color: var(--bronze);
+}
+.sc-steps p {
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.sc-steps small {
+  display: block;
+  margin-top: 4px;
+  font: 600 9.5px/1.4 var(--sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ---------- gates: channels ---------- */
+.sc-channels {
+  display: grid;
+  gap: 2px;
+}
+.sc-channels a,
+.sc-channels li > span {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 0;
+  font-size: 14.5px;
+}
+.sc-channels small {
+  display: block;
+  font: 600 9.5px/1.4 var(--sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.sc-channels .channel-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(181, 138, 88, 0.55);
+  border-radius: 50%;
+  background: rgba(7, 21, 25, 0.4);
+}
+.sc-closing {
+  margin-top: 18px;
+  font: italic 500 24px/1.2 var(--display);
+  color: var(--bronze);
+}
+.sc-foot {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc.is-on .rv {
+    transition-delay: 0s;
+  }
+  .sc-art,
+  .sc-frame img {
+    scale: 1;
+  }
+}
