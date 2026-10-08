@@ -24,7 +24,9 @@ export function Pantheon() {
         // an ivory dome rises out of the forge's dark and swells until it fills the screen
         scrubbed(section, 'top bottom', 'top 35%')
           .fromTo('.pantheon-reveal', { clipPath: 'circle(0vh at 50% 60vh)' }, { clipPath: 'circle(110vh at 50% 60vh)', ease: 'power1.in' }, 0)
-          .fromTo('.art--pantheon', { scale: 1.2 }, { scale: 1 }, 0);
+          .fromTo('.art--pantheon', { scale: 1.2 }, { scale: 1 }, 0)
+          // the chapter is taller than the dome, so let the ivory reach its foot once the dome has filled the screen
+          .set('.pantheon-reveal', { clipPath: 'none' });
         // the intro waits until the dome has covered it so dark ink never sits on the dark forge
         reveal(section.querySelector('.track-intro')!, 'top 70%')
           .from('.track-intro .label', { autoAlpha: 0, x: -24 }, 0)
