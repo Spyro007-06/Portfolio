@@ -60,7 +60,7 @@
   border-left: 1px solid rgba(181, 138, 88, 0.45);
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .scene--hall {
     height: 170vh;
   }
@@ -132,5 +132,64 @@
     bottom: 52px;
     max-width: 30ch;
     margin: 0;
+  }
+}
+
+/* ---------- phones: the hall in one column, the creed folded in under the signature ---------- */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .veil--hall {
+    background: linear-gradient(0deg, rgba(11, 32, 38, 0.96) 34%, rgba(11, 32, 38, 0.62) 62%, rgba(11, 32, 38, 0.2) 100%);
+  }
+  .fg-column {
+    height: 112vh;
+  }
+  .fg-column--l {
+    left: -38vw;
+  }
+  .fg-column--r {
+    right: -38vw;
+  }
+  .hall-stage {
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 84px 22px 24px;
+  }
+  .hall-copy {
+    width: 100%;
+  }
+  .hall-copy .h2 {
+    margin: 14px 0 14px;
+    font-size: clamp(30px, 9.4vw, 40px);
+  }
+  .ornament {
+    width: 170px;
+    margin-bottom: min(14px, 1.6vh);
+  }
+  .hall-copy .body {
+    max-width: none;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .qualities {
+    gap: 10px 16px;
+    margin-top: min(16px, 2vh);
+  }
+  .qualities li {
+    font-size: 10.5px;
+  }
+  .q-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .signature {
+    margin-top: min(14px, 1.8vh);
+    font-size: 21px;
+  }
+  .hall-quote {
+    position: static;
+    max-width: none;
+    margin-top: 12px;
+    padding-left: 14px;
+    font-size: 16px;
   }
 }

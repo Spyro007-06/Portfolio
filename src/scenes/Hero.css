@@ -90,7 +90,7 @@
   color: var(--bronze);
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .scene--hero {
     height: 250vh;
   }
@@ -136,5 +136,33 @@
     position: absolute;
     left: var(--pad);
     bottom: 40px;
+  }
+}
+
+/* ---------- phones: the statue towers over the top of the frame, the titles rise from the foot ---------- */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .statue {
+    /* the rock runs off the foot of the frame, so its cut edge never shows as the camera moves */
+    right: -22vw;
+    bottom: -8svh;
+    height: 80svh;
+    top: auto;
+  }
+  .veil--hero {
+    background:
+      linear-gradient(0deg, rgba(11, 32, 38, 0.97) 16%, rgba(11, 32, 38, 0.72) 40%, rgba(11, 32, 38, 0) 68%),
+      linear-gradient(180deg, rgba(11, 32, 38, 0.6), transparent 18%);
+  }
+  .hero-stage {
+    justify-content: flex-end;
+    padding: 90px 22px 92px;
+  }
+  .hero-line {
+    margin: 14px 0 26px;
+    font-size: 20px;
+  }
+  .hero-meta-wrap {
+    left: 22px;
+    bottom: 34px;
   }
 }
