@@ -536,6 +536,11 @@ li {
   }
 }
 
+/* Netlify injects a "Powered by Netlify" badge on published pages */
+#nl-badge-frame {
+  display: none !important;
+}
+
 /* ---------- footer ---------- */
 .footer {
   position: relative;
