@@ -77,7 +77,7 @@
   color: var(--text-dim);
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .scene--ascent {
     height: 200vh;
   }
@@ -169,5 +169,51 @@
   .milestone-text p {
     font-size: 13.5px;
     line-height: 1.6;
+  }
+}
+
+/* the climb wrapper only matters on phones; everywhere else its children lay out as if it weren't there */
+.climb {
+  display: contents;
+}
+.trail--tall {
+  display: none;
+}
+
+/* ---------- phones: the film, re-composed as a vertical climb ---------- */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .veil--ascent {
+    background:
+      linear-gradient(180deg, rgba(11, 32, 38, 0.88) 0%, rgba(11, 32, 38, 0.3) 38%, rgba(11, 32, 38, 0.3) 62%, rgba(11, 32, 38, 0.85) 100%);
+  }
+  .ascent-copy {
+    top: 96px;
+    left: 22px;
+    right: 22px;
+  }
+  .climb {
+    display: block;
+    position: absolute;
+    inset: auto 0 0;
+    height: 220svh;
+    will-change: transform;
+  }
+  .trail.trail--wide {
+    display: none !important;
+  }
+  .trail--tall {
+    display: block;
+  }
+  .milestone,
+  .milestone:first-child {
+    left: var(--px);
+    top: var(--py);
+    width: 62vw;
+  }
+  .medal {
+    width: 92px;
+  }
+  .milestone-text p {
+    font-size: 13.5px;
   }
 }

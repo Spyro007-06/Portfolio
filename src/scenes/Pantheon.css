@@ -110,7 +110,7 @@
   }
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .scene--pantheon {
     height: 270vh;
   }
@@ -178,5 +178,47 @@
   .panel-text > * {
     opacity: clamp(0, (var(--a, 0) - 0.48 - var(--i) * 0.05) * 4, 1);
     translate: 0 calc((1 - var(--a, 0)) * 28px);
+  }
+}
+
+/* ---------- phones: the gallery still travels sideways, one tall panel at a time ---------- */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .wipe-column {
+    top: -6vh;
+    height: 112vh;
+  }
+  .track {
+    gap: 6vw;
+    padding: 64px 8vw 0;
+  }
+  .track-intro {
+    flex: 0 0 84vw;
+  }
+  .panel {
+    flex: 0 0 84vw;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+  .panel-frame {
+    height: 30svh;
+  }
+  .panel-text {
+    padding: 0 6px 6px;
+  }
+  .panel h3 {
+    margin: 10px 0 6px;
+    font-size: 30px;
+  }
+  .panel-desc {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .panel-labels {
+    margin-top: 12px;
+  }
+  .panel-cta {
+    margin-top: 14px;
   }
 }

@@ -98,7 +98,7 @@
   }
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .scene--forge {
     height: 210vh;
   }
@@ -153,5 +153,44 @@
   }
   to {
     scale: 1.06;
+  }
+}
+
+/* ---------- phones: the tools laid out as one compact rack under the copy ---------- */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .forge-shade {
+    background: linear-gradient(0deg, rgba(11, 32, 38, 0.96) 32%, rgba(11, 32, 38, 0.55) 62%, rgba(11, 32, 38, 0.1) 100%);
+  }
+  .forge-stage {
+    justify-content: flex-end;
+    padding: 84px 22px 28px;
+  }
+  .forge-copy .h2 {
+    font-size: clamp(30px, 9.4vw, 40px);
+  }
+  .forge-copy .body {
+    font-size: 14px;
+  }
+  .tools {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .tool-card {
+    height: auto;
+    gap: 6px;
+    padding: 14px 4px 10px;
+    border-radius: 44px 44px 12px 12px;
+  }
+  .tool-mark {
+    width: 26px;
+    height: 26px;
+  }
+  .tool-card h3 {
+    font-size: 10px;
+  }
+  .tool-card p {
+    display: none;
   }
 }

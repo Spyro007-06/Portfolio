@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
 import { journey } from '../content';
-import { CINEMATIC, LIGHT, gsap, liveWhileOnScreen, reveal, revealCopy, scrubbed, useGSAP } from '../lib/motion';
+import { CINEMATIC, LIGHT, PORTRAIT, gsap, liveWhileOnScreen, reveal, revealCopy, scrubbed, useGSAP } from '../lib/motion';
 import { Lines } from '../components/Lines';
 import { Scenery } from '../components/Scenery';
 import './Ascent.css';
@@ -12,6 +12,13 @@ const STOPS = [
   { x: 82, y: 31, at: 0.7 },
 ];
 const PATH = 'M3 80 C 8 73, 12 65, 17 62 S 38 51, 50 49 S 70 40, 82 31 S 93 21, 98 17';
+// phones: the same three stops zig-zag up a track ~2.2 screens tall (percent of that track)
+const STOPS_TALL = [
+  { x: 37, y: 79 },
+  { x: 62, y: 50 },
+  { x: 38, y: 22 },
+];
+const PATH_TALL = 'M20 100 C 26 93, 33 85, 37 79 S 58 58, 62 50 S 44 30, 38 22 S 44 6, 56 0';
 
 /** Chapter 04 — The Ascent. The camera pulls back, the path draws itself and dawn warms the mountain. */
 export function Ascent() {
@@ -40,6 +47,27 @@ export function Ascent() {
           gsap.timeline({ scrollTrigger: { trigger: stop, start: 'top 62%', end: 'bottom 38%', toggleClass: 'is-active' } });
         });
         return () => stops.forEach((s) => s.classList.remove('is-active'));
+      });
+
+      // phones, on top of the film below: the camera climbs the tall track, so each milestone passes through the frame in turn
+      mm.add(PORTRAIT, () => {
+        const section = root.current!;
+        const climb = section.querySelector<HTMLElement>('.climb')!;
+        // how far to lower the track so stop i's medal sits just above the middle of the screen, text beneath it
+        const framing = (i: number) => () => climb.offsetHeight * (1 - STOPS_TALL[i].y / 100) - window.innerHeight * 0.66;
+        gsap
+          .timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 0.9, invalidateOnRefresh: true },
+          })
+          // the track hangs from the foot of the frame (the first stop in view); lowering it brings the higher stops down into frame
+          // the heading steps aside just as the first milestone arrives (0.1)
+          .to('.ascent-copy', { autoAlpha: 0, y: -40, duration: 0.08, ease: 'power1.in' }, 0.04)
+          // then the camera rests on each milestone and climbs to the next, while the film above lights them in turn (0.4, 0.7)
+          .fromTo(climb, { y: 0 }, { y: framing(0), duration: 0.08, ease: 'power2.inOut' }, 0.04)
+          .to(climb, { y: framing(1), duration: 0.14, ease: 'power2.inOut' }, 0.31)
+          .to(climb, { y: framing(2), duration: 0.14, ease: 'power2.inOut' }, 0.6)
+          .set({}, {}, 1); // run the full length so these positions line up with the film's 0.4 / 0.7 cues
       });
 
       mm.add(CINEMATIC, () => {
@@ -109,14 +137,24 @@ export function Ascent() {
           <p className="body">{journey.body}</p>
         </div>
 
-        <svg className="trail cine-only" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        {/* the climb: on desktop it simply lays out over the stage; on phones it is a tall track the camera climbs */}
+        <div className="climb">
+        <svg className="trail trail--wide cine-only" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <path className="trail-base" d={PATH} vectorEffect="non-scaling-stroke" />
           <path className="trail-line" d={PATH} pathLength={1} strokeDasharray="1" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <svg className="trail trail--tall" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path className="trail-base" d={PATH_TALL} vectorEffect="non-scaling-stroke" />
+          <path className="trail-line" d={PATH_TALL} pathLength={1} strokeDasharray="1" vectorEffect="non-scaling-stroke" />
         </svg>
 
         <ol className="milestones">
           {journey.milestones.map((m, i) => (
-            <li className="milestone" key={m.title} style={{ '--x': `${STOPS[i].x}%`, '--y': `${STOPS[i].y}%` } as CSSProperties}>
+            <li
+              className="milestone"
+              key={m.title}
+              style={{ '--x': `${STOPS[i].x}%`, '--y': `${STOPS[i].y}%`, '--px': `${STOPS_TALL[i].x}%`, '--py': `${STOPS_TALL[i].y}%` } as CSSProperties}
+            >
               <div className="milestone-in">
                 <span className="medal">
                   <img src={`/art/${m.art}.webp`} width={560} height={560} alt="" loading="lazy" decoding="async" />
@@ -132,6 +170,7 @@ export function Ascent() {
             </li>
           ))}
         </ol>
+        </div>
       </div>
     </section>
   );

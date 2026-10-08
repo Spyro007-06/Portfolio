@@ -5,10 +5,14 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-/** Full cinematic mode: pinned scenes, fixed environment layers, scrubbed camera moves. Must match the CSS in styles/base.css. */
-export const CINEMATIC = '(min-width: 1024px) and (prefers-reduced-motion: no-preference)';
-/** Phones and tablets that still allow motion get light, decorative-only animation. */
-export const LIGHT = '(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)';
+/** Full cinematic mode: pinned scenes, fixed environment layers, scrubbed camera moves. Desktop, and phones in a
+ *  portrait-composed version (see PORTRAIT). Must match the CSS media blocks in styles/base.css and the scenes. */
+export const CINEMATIC =
+  '(min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference)';
+/** The phone half of CINEMATIC: same film, re-composed for a tall screen. */
+export const PORTRAIT = '(max-width: 767.98px) and (prefers-reduced-motion: no-preference)';
+/** Tablets that still allow motion get light, scroll-revealed animation. */
+export const LIGHT = '(min-width: 768px) and (max-width: 1023.98px) and (prefers-reduced-motion: no-preference)';
 
 export const prefersReducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 

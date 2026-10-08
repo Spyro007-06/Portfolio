@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties } from 'react';
 import { projects } from '../content';
-import { CINEMATIC, LIGHT, gsap, liveWhileOnScreen, reveal, scrollToY, scrubbed, useGSAP } from '../lib/motion';
+import { CINEMATIC, LIGHT, PORTRAIT, gsap, liveWhileOnScreen, reveal, scrollToY, scrubbed, useGSAP } from '../lib/motion';
 import { Cta } from '../components/Cta';
 import { Lines } from '../components/Lines';
 import { Scenery } from '../components/Scenery';
@@ -51,6 +51,13 @@ export function Pantheon() {
         const track = section.querySelector<HTMLElement>('.track')!;
         const panels = gsap.utils.toArray<HTMLElement>('.panel', section);
         const travel = () => Math.max(0, track.scrollWidth - window.innerWidth);
+        const portrait = matchMedia(PORTRAIT).matches;
+        // phones show one panel at a time, so the gallery comes to rest with a panel (or the intro) centred
+        const restingPoints = () => [
+          0,
+          ...panels.map((p) => (gsap.utils.clamp(0, travel(), p.offsetLeft + p.offsetWidth / 2 - window.innerWidth / 2) / travel()) * TRAVEL),
+          1,
+        ];
 
         // entrance: the column sweeps across and the ivory hall is revealed in its wake
         gsap
@@ -61,7 +68,8 @@ export function Pantheon() {
           .fromTo('.pantheon-reveal', { clipPath: 'inset(0% 0% 0% 100%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1 }, 0)
           .fromTo(column, { x: () => window.innerWidth - column.offsetWidth / 2 }, { x: () => -column.offsetWidth / 2, duration: 1 }, 0)
           .fromTo('.art--pantheon', { scale: 1.12 }, { scale: 1.05, duration: 1 }, 0)
-          .from('.track-intro > *', { autoAlpha: 0, y: 30, duration: 0.3, stagger: 0.08, ease: 'power2.out' }, 0.62);
+          // on a phone the intro sits right where the column sweeps last, so it waits for it to pass
+          .from('.track-intro > *', { autoAlpha: 0, y: 30, duration: 0.3, stagger: 0.08, ease: 'power2.out' }, portrait ? 0.86 : 0.62);
 
         // how close each panel is to centre stage drives its scale, light and the order its text arrives in
         const focusPanels = () => {
@@ -78,7 +86,15 @@ export function Pantheon() {
           .timeline({
             defaults: { ease: 'none' },
             onUpdate: focusPanels,
-            scrollTrigger: { trigger: section, start: 'top top', end: 'bottom bottom', scrub: 0.9, invalidateOnRefresh: true, onRefresh: focusPanels },
+            scrollTrigger: {
+              trigger: section,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.9,
+              invalidateOnRefresh: true,
+              onRefresh: focusPanels,
+              snap: portrait ? { snapTo: (v: number) => gsap.utils.snap(restingPoints(), v), duration: { min: 0.3, max: 0.8 }, delay: 0.08, ease: 'power2.inOut' } : undefined,
+            },
           })
           .fromTo(column, { x: () => -column.offsetWidth / 2 }, { x: () => -column.offsetWidth - 60, duration: 0.05, immediateRender: false }, 0)
           .fromTo('.art--pantheon', { scale: 1.05, xPercent: 0 }, { scale: 1, xPercent: -2, duration: 1, immediateRender: false }, 0)

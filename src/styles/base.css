@@ -494,7 +494,7 @@ li {
   background: var(--abyss);
 }
 
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference), (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
   .rail {
     display: block;
   }
@@ -590,5 +590,15 @@ li {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* phones in the cinematic film: no side rail (the menu covers navigation), and stages sized to the visible screen */
+@media (max-width: 767.98px) and (prefers-reduced-motion: no-preference) {
+  .rail {
+    display: none;
+  }
+  .stage {
+    height: 100svh;
   }
 }
